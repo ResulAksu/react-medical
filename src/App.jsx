@@ -4,6 +4,10 @@ import DoctorDashboard from './pages/DoctorDashboard';
 import Home from './pages/Home';
 import Uploads from './pages/Uploads';
 import PatientPortfolio from './pages/PatientPortfolio';
+import { initializeLocalStorageIfEmpty } from "./data/storageService";
+
+// Direkt beim Laden der App aufrufen
+initializeLocalStorageIfEmpty();
 
 function App() {
   return (
