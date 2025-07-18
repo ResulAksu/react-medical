@@ -32,6 +32,7 @@ export async function loadPatientsAPI() {
 }
 
 export function initializeLocalStorageIfEmpty() {
+  localStorage.clear();
   if (!localStorage.getItem(LS_PATIENTS_KEY)) {
     localStorage.setItem(LS_PATIENTS_KEY, JSON.stringify(mockPatients));
   }

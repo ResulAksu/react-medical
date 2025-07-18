@@ -1,6 +1,6 @@
 export const mockPatients = [
   {
-    id: 1,
+    id: "PATIENT1",
     name: "Max Mustermann",
     birthdate: "1990-01-01",
     address: "Musterstraße 1, 12345 Musterstadt",
@@ -13,9 +13,9 @@ export const mockPatients = [
 
 export const mockUploads = [
   {
-    id: 1,
+    id: "1",
     title: "Blood Test.pdf",
-    patientId: 1,
+    patientId: "PATIENT1",
     patientName: "Max Mustermann",
     birthdate: "1990-01-01",
     type: "Lab",

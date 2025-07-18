@@ -16,7 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<DoctorDashboard />} />
-        <Route path="/uploads" element={<Uploads />} />
+        <Route path="/dm" element={<Uploads />} />
         <Route path="/patient/:id" element={<PatientPortfolio />} />
       </Routes>
     </Router>
