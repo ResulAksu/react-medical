@@ -1,3 +1,19 @@
+# ⚠️ EXTREMELY IMPORTANT: AI Feedback Loop Usage ⚠️
+
+> **To use the AI Feedback loop correctly, you MUST follow this exact order when interacting with the chatbot:**
+
+1. **Press "Implement Feedback"**
+2. **Press "Yes"**
+3. **Press "Yes"**
+4. **Press "No"**
+5. **Press "No"**
+6. **Press "Yes"**
+7. **Press "This is enough"**
+
+**Any other sequence or button press is NOT implemented :x**
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
