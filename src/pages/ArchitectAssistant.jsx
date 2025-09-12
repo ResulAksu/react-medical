@@ -1,10 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const AGENT_STEPS = [
   { key: "input", label: "Input Agent", emoji: "📝" },
   { key: "orchestrator", label: "Orchestrator Agent", emoji: "🤖" },
   { key: "image", label: "Image-to-Text Agent", emoji: "🖼️" },
   { key: "architecture", label: "Architecture Agent", emoji: "🏗️" },
+];
+
+const CHAT_QUESTIONS = [
+  {
+    question: "Do you want users to access the virtual assistant via a web browser with fast global delivery of the UI?",
+    yes: "We’ll use Amazon CloudFront to deliver the web interface and Amazon S3 to host the static content.",
+    no: null,
+  },
+  {
+    question: "Should the system authenticate users and manage access control using Amazon Cognito?",
+    yes: "Cognito will verify user identity and permissions before allowing access.",
+    no: null,
+  },
+  {
+    question: "Do you want the client to send queries directly to Bedrock without any orchestration logic?",
+    yes: null,
+    no: "We’ll use an AWS Lambda function to orchestrate the AI workflow and route the query to a Bedrock Supervisor Agent.",
+    noLabel: "NO",
+  },
+  {
+    question: "Should the Bedrock Supervisor Agent handle all queries without delegating to specialized agents?",
+    yes: null,
+    no: "We’ll introduce Domain-Specific Agents that the Supervisor Agent can delegate to for specialized processing.",
+    noLabel: "NO",
+  },
+  {
+    question: "Do you want to include both internal and external data sources to answer user queries?",
+    yes: "We’ll use Amazon Bedrock Knowledge Bases and OpenSearch for internal data, and a Lambda Web Search function with Tavily API for external data.",
+    no: null,
+    yesLabel: "YES",
+  },
+  {
+    question: "Do you need more feedback or is this enough?",
+    yes: "Okay, please specify what additional feedback you need.",
+    no: "Great! Proceeding with the architecture.",
+    yesLabel: "Needs more feedback",
+    noLabel: "This is enough",
+  },
 ];
 
 // Placeholder for future API calls
@@ -32,6 +70,12 @@ export default function SolutionArchitectAssistant() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [currentAgent, setCurrentAgent] = useState(null);
+  const [showQuestion, setShowQuestion] = useState(false);
+  const [questionAnswered, setQuestionAnswered] = useState(null);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [showChatQuestion, setShowChatQuestion] = useState(false);
+  const [chatWaiting, setChatWaiting] = useState(false);
+  const [chatStep, setChatStep] = useState(0);
 
   // Main workflow
   const handleSubmit = async (e) => {
@@ -103,9 +147,100 @@ export default function SolutionArchitectAssistant() {
     setCurrentAgent(null);
   };
 
+  // Show feedback as chat message
+  useEffect(() => {
+    if (aiFeedback && showFeedback && !result) {
+      setChatMessages([
+        { sender: "ai", text: aiFeedback }
+      ]);
+    }
+  }, [aiFeedback, showFeedback, result]);
+
+  // Handle "Implement feedback" as chat
+  const handleImplementFeedbackChat = async () => {
+    setShowChatQuestion(true);
+    setShowFeedback(false);
+    setChatWaiting(true);
+    setChatStep(0);
+    setTimeout(() => {
+      setChatMessages((msgs) => [
+        ...msgs,
+        {
+          sender: "ai",
+          text: CHAT_QUESTIONS[0].question
+        }
+      ]);
+      setChatWaiting(false);
+    }, 1000);
+  };
+
+  // Handle chat answer
+  const handleChatAnswer = (answer) => {
+    const currentQ = CHAT_QUESTIONS[chatStep];
+    setChatMessages((msgs) => [
+      ...msgs,
+      { sender: "user", text: answer === "yes" ? (currentQ.yesLabel || "Yes") : (currentQ.noLabel || "No") }
+    ]);
+    setChatWaiting(true);
+
+    setTimeout(() => {
+      let nextStep = chatStep + 1;
+      // Show feedback if any
+      if (answer === "yes" && currentQ.yes) {
+        setChatMessages((msgs) => [
+          ...msgs,
+          { sender: "ai", text: currentQ.yes }
+        ]);
+      }
+      if (answer === "no" && currentQ.no) {
+        setChatMessages((msgs) => [
+          ...msgs,
+          { sender: "ai", text: currentQ.no }
+        ]);
+      }
+      // Ask next question if any
+      if (nextStep < CHAT_QUESTIONS.length) {
+        setTimeout(() => {
+          setChatMessages((msgs) => [
+            ...msgs,
+            { sender: "ai", text: CHAT_QUESTIONS[nextStep].question }
+          ]);
+          setChatStep(nextStep);
+          setChatWaiting(false);
+        }, 1000);
+      } else {
+        // If last answer is "This is enough", close chat and show architecture result
+        if (answer === "no" && currentQ.noLabel === "This is enough") {
+          setTimeout(() => {
+            setShowChatQuestion(false);
+            setResult({
+              imageUrl: process.env.PUBLIC_URL + "/d2d771c9-ce1e-45bc-965a-c01021af5e2e-aws-multi-agent-employee-virtual-assistant-architecture-diagram-2928x1797.5c46b69a1d0e34439346d3893899258324c4fc55.png",
+              documentation:
+                `The user accesses TeamLink AI, an Amazon Bedrock-powered virtual assistant, through their web browser to submit queries and receive instant cross-departmental information.\n\n` +
+                `When the user accesses the application, Amazon CloudFront delivers the web interface content, helping ensure a smooth experience regardless of the user's location.\n\n` +
+                `Behind the scenes, Amazon S3 serves the static website content, while Amazon Cognito verifies the user's identity and permissions to access the system.\n\n` +
+                `After the user submits their query, the client application triggers an AWS Lambda function that acts as the orchestrator for the AI processing workflow.\n\n` +
+                `The Lambda function forwards the user's request to the Amazon Bedrock Supervisor Agent, which acts as the primary coordinator for processing the query.\n\n` +
+                `The Supervisor Agent within Amazon Bedrock analyzes the query and directs it to the appropriate Domain-Specific Agent for specialized processing.\n\n` +
+                `To locate relevant information, the Domain Agent queries Amazon Bedrock Knowledge Bases, the system's central information repository.\n\n` +
+                `The system then uses Amazon OpenSearch Serverless to search through indexed documents for query-related matches.\n\n` +
+                `During this process, Amazon S3 provides access to domain-specific datasets that have been previously indexed in the OpenSearch system.\n\n` +
+                `If the query requires external information, the system activates a Lambda Web Search function to expand the search beyond internal resources.\n\n` +
+                `Lambda web search queries the internet for additional data if needed, using Tavily API.\n\n` +
+                `Throughout the interaction, Amazon DynamoDB maintains a record of the entire conversation between the user and system.`
+            });
+            setChatWaiting(false);
+          }, 1000);
+        } else {
+          setChatWaiting(false);
+        }
+      }
+    }, 1000);
+  };
+
   return (
     <div className="min-h-screen bg-black flex flex-col items-center py-10">
-  <div className="w-full max-w-4xl bg-[#18181b] rounded-2xl shadow-2xl p-12 border border-gray-800">
+      <div className="w-full max-w-4xl bg-[#18181b] rounded-2xl shadow-2xl p-12 border border-gray-800">
         <h1 className="text-3xl font-bold text-white mb-6 text-center tracking-wide">
           Architect Assistant
         </h1>
@@ -162,29 +297,70 @@ export default function SolutionArchitectAssistant() {
           </button>
         </form>
         {loading && <div className="text-gray-400 mb-4">Processing agents...</div>}
-  {aiFeedback && showFeedback && !result && (
-          <div className="bg-yellow-900 text-yellow-200 rounded-lg p-4 mb-4">
-            <div className="mb-2 font-semibold">AI Feedback:</div>
-            <div>{aiFeedback}</div>
-            <div className="flex gap-2 mt-4">
-              <button
-                className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition"
-                onClick={handleGoWithResult}
-                disabled={loading}
+        {/* Chatbox UI */}
+        {(aiFeedback && showFeedback && !result) || (showChatQuestion && !result) ? (
+          <div className="bg-gray-900 rounded-lg p-4 mb-4 flex flex-col gap-2" style={{ minHeight: 120 }}>
+            {chatMessages.map((msg, idx) => (
+              <div
+                key={idx}
+                className={`flex ${msg.sender === "ai" ? "justify-start" : "justify-end"}`}
               >
-                Ignore feedback & get result
-              </button>
-              <button
-                className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"
-                onClick={() => {
-                  setInputText(inputText + "\n[AI Feedback implemented]");
-                  setShowFeedback(false);
-                }}
-                disabled={loading}
-              >
-                Implement feedback
-              </button>
-            </div>
+                <div
+                  className={`px-4 py-2 rounded-lg max-w-[80%] ${
+                    msg.sender === "ai"
+                      ? "bg-blue-900 text-blue-100"
+                      : "bg-green-700 text-white"
+                  }`}
+                >
+                  {msg.text}
+                </div>
+              </div>
+            ))}
+            {chatWaiting && (
+              <div className="flex justify-start">
+                <div className="px-4 py-2 rounded-lg bg-blue-900 text-blue-100 animate-pulse">
+                  ...
+                </div>
+              </div>
+            )}
+            {/* Show buttons only if waiting for answer */}
+            {showChatQuestion && !chatWaiting && chatStep < CHAT_QUESTIONS.length && (
+              <div className="flex gap-2 mt-2 justify-start">
+                <button
+                  className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition"
+                  onClick={() => handleChatAnswer("yes")}
+                  disabled={chatWaiting}
+                >
+                  {CHAT_QUESTIONS[chatStep].yesLabel || "Yes"}
+                </button>
+                <button
+                  className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"
+                  onClick={() => handleChatAnswer("no")}
+                  disabled={chatWaiting}
+                >
+                  {CHAT_QUESTIONS[chatStep].noLabel || "No"}
+                </button>
+              </div>
+            )}
+          </div>
+        ) : null}
+        {/* Feedback buttons */}
+        {aiFeedback && showFeedback && !result && (
+          <div className="flex gap-2 mb-4">
+            <button
+              className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition"
+              onClick={handleGoWithResult}
+              disabled={loading}
+            >
+              Ignore feedback & get result
+            </button>
+            <button
+              className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"
+              onClick={handleImplementFeedbackChat}
+              disabled={loading}
+            >
+              Implement feedback
+            </button>
           </div>
         )}
         {result && (
