@@ -1,6 +1,6 @@
 # ⚠️ EXTREMELY IMPORTANT: AI Feedback Loop Usage ⚠️
 
-> **To use the AI Feedback loop correctly, you MUST follow this exact order when interacting with the chatbot:**
+> **To use the AI Feedback loop correctly, follow this order when interacting with the chatbot:**
 
 1. **Press "Implement Feedback"**
 2. **Press "Yes"**
@@ -10,7 +10,7 @@
 6. **Press "Yes"**
 7. **Press "This is enough"**
 
-**Any other sequence or button press is NOT implemented :x**
+**Only then the predefined diagram and generated output makes sense :x **
 
 ---
 
