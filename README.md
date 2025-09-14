@@ -14,6 +14,10 @@
 
 ---
 
+Jira Link: [jira](https://can-solutions.atlassian.net/browse/SCRUM-1?atlOrigin=eyJpIjoiYTg0ZWMwOTMyMGM0NDY4NGIyZGRkOWM4NjU4OTRkZWYiLCJwIjoiaiJ9)
+
+Confluence: [confluence](https://can-solutions.atlassian.net/wiki/spaces/~608085e2cbff1b00700dc8db/pages/360449/AWS+Multi-Agent+Employee+Virtual+Assistant+Architecture+Preview)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
