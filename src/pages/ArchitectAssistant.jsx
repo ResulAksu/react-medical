@@ -98,18 +98,7 @@ export default function SolutionArchitectAssistant() {
       result: {
         imageUrl: process.env.PUBLIC_URL + "/d2d771c9-ce1e-45bc-965a-c01021af5e2e-aws-multi-agent-employee-virtual-assistant-architecture-diagram-2928x1797.5c46b69a1d0e34439346d3893899258324c4fc55.png", // Beispielbild aus public
         documentation:
-          `The user accesses TeamLink AI, an Amazon Bedrock-powered virtual assistant, through their web browser to submit queries and receive instant cross-departmental information.\n\n" +
-          "When the user accesses the application, Amazon CloudFront delivers the web interface content, helping ensure a smooth experience regardless of the user's location.\n\n" +
-          "Behind the scenes, Amazon S3 serves the static website content, while Amazon Cognito verifies the user's identity and permissions to access the system.\n\n" +
-          "After the user submits their query, the client application triggers an AWS Lambda function that acts as the orchestrator for the AI processing workflow.\n\n" +
-          "The Lambda function forwards the user's request to the Amazon Bedrock Supervisor Agent, which acts as the primary coordinator for processing the query.\n\n" +
-          "The Supervisor Agent within Amazon Bedrock analyzes the query and directs it to the appropriate Domain-Specific Agent for specialized processing.\n\n" +
-          "To locate relevant information, the Domain Agent queries Amazon Bedrock Knowledge Bases, the system's central information repository.\n\n" +
-          "The system then uses Amazon OpenSearch Serverless to search through indexed documents for query-related matches.\n\n" +
-          "During this process, Amazon S3 provides access to domain-specific datasets that have been previously indexed in the OpenSearch system.\n\n" +
-          "If the query requires external information, the system activates a Lambda Web Search function to expand the search beyond internal resources.\n\n" +
-          "Lambda web search queries the internet for additional data if needed, using Tavily API.\n\n" +
-          "Throughout the interaction, Amazon DynamoDB maintains a record of the entire conversation between the user and system.`
+          `AWS Multi-Agent Employee Virtual Assistant Architecture:\n\n- CloudFront delivers the web UI.\n- S3 hosts static content.\n- Cognito manages authentication.\n- Lambda orchestrates AI workflow.\n- Bedrock Supervisor & Domain Agents process queries.\n- Knowledge Base & OpenSearch for internal data.\n- Lambda Web Search for external data.\n- DynamoDB stores conversation history.`
       }
     };
 
@@ -127,18 +116,7 @@ export default function SolutionArchitectAssistant() {
       result: {
         imageUrl: process.env.PUBLIC_URL + "/d2d771c9-ce1e-45bc-965a-c01021af5e2e-aws-multi-agent-employee-virtual-assistant-architecture-diagram-2928x1797.5c46b69a1d0e34439346d3893899258324c4fc55.png",
         documentation:
-          `The user accesses TeamLink AI, an Amazon Bedrock-powered virtual assistant, through their web browser to submit queries and receive instant cross-departmental information.\n\n" +
-          "When the user accesses the application, Amazon CloudFront delivers the web interface content, helping ensure a smooth experience regardless of the user's location.\n\n" +
-          "Behind the scenes, Amazon S3 serves the static website content, while Amazon Cognito verifies the user's identity and permissions to access the system.\n\n" +
-          "After the user submits their query, the client application triggers an AWS Lambda function that acts as the orchestrator for the AI processing workflow.\n\n" +
-          "The Lambda function forwards the user's request to the Amazon Bedrock Supervisor Agent, which acts as the primary coordinator for processing the query.\n\n" +
-          "The Supervisor Agent within Amazon Bedrock analyzes the query and directs it to the appropriate Domain-Specific Agent for specialized processing.\n\n" +
-          "To locate relevant information, the Domain Agent queries Amazon Bedrock Knowledge Bases, the system's central information repository.\n\n" +
-          "The system then uses Amazon OpenSearch Serverless to search through indexed documents for query-related matches.\n\n" +
-          "During this process, Amazon S3 provides access to domain-specific datasets that have been previously indexed in the OpenSearch system.\n\n" +
-          "If the query requires external information, the system activates a Lambda Web Search function to expand the search beyond internal resources.\n\n" +
-          "Lambda web search queries the internet for additional data if needed, using Tavily API.\n\n" +
-          "Throughout the interaction, Amazon DynamoDB maintains a record of the entire conversation between the user and system.`
+          `AWS Multi-Agent Employee Virtual Assistant Architecture:\n\n- CloudFront delivers the web UI.\n- S3 hosts static content.\n- Cognito manages authentication.\n- Lambda orchestrates AI workflow.\n- Bedrock Supervisor & Domain Agents process queries.\n- Knowledge Base & OpenSearch for internal data.\n- Lambda Web Search for external data.\n- DynamoDB stores conversation history.`
       }
     };
     setResult(archResponse.result);
@@ -216,18 +194,7 @@ export default function SolutionArchitectAssistant() {
             setResult({
               imageUrl: process.env.PUBLIC_URL + "/d2d771c9-ce1e-45bc-965a-c01021af5e2e-aws-multi-agent-employee-virtual-assistant-architecture-diagram-2928x1797.5c46b69a1d0e34439346d3893899258324c4fc55.png",
               documentation:
-                `The user accesses TeamLink AI, an Amazon Bedrock-powered virtual assistant, through their web browser to submit queries and receive instant cross-departmental information.\n\n` +
-                `When the user accesses the application, Amazon CloudFront delivers the web interface content, helping ensure a smooth experience regardless of the user's location.\n\n` +
-                `Behind the scenes, Amazon S3 serves the static website content, while Amazon Cognito verifies the user's identity and permissions to access the system.\n\n` +
-                `After the user submits their query, the client application triggers an AWS Lambda function that acts as the orchestrator for the AI processing workflow.\n\n` +
-                `The Lambda function forwards the user's request to the Amazon Bedrock Supervisor Agent, which acts as the primary coordinator for processing the query.\n\n` +
-                `The Supervisor Agent within Amazon Bedrock analyzes the query and directs it to the appropriate Domain-Specific Agent for specialized processing.\n\n` +
-                `To locate relevant information, the Domain Agent queries Amazon Bedrock Knowledge Bases, the system's central information repository.\n\n` +
-                `The system then uses Amazon OpenSearch Serverless to search through indexed documents for query-related matches.\n\n` +
-                `During this process, Amazon S3 provides access to domain-specific datasets that have been previously indexed in the OpenSearch system.\n\n` +
-                `If the query requires external information, the system activates a Lambda Web Search function to expand the search beyond internal resources.\n\n` +
-                `Lambda web search queries the internet for additional data if needed, using Tavily API.\n\n` +
-                `Throughout the interaction, Amazon DynamoDB maintains a record of the entire conversation between the user and system.`
+                `The user accesses TeamLink AI, an Amazon Bedrock-powered virtual assistant, through their web browser to submit queries and receive instant cross-departmental information...\n\n`
             });
             setChatWaiting(false);
           }, 1000);
@@ -412,8 +379,27 @@ export default function SolutionArchitectAssistant() {
                 Export as Draw.io XML
               </button>
             </div>
-            <div className="text-gray-200 whitespace-pre-line">
+            <div className="text-gray-200 whitespace-pre-line mb-6">
               {result.documentation}
+            </div>
+            {/* Jira & Confluence Buttons */}
+            <div className="flex gap-4 justify-center mt-6">
+              <a
+                href="https://can-solutions.atlassian.net/browse/SCRUM-1?atlOrigin=eyJpIjoiYTg0ZWMwOTMyMGM0NDY4NGIyZGRkOWM4NjU4OTRkZWYiLCJwIjoiaiJ9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-[#0052CC] text-white px-6 py-3 rounded-lg hover:bg-[#0747A6] transition text-lg font-semibold"
+              >
+                Jira
+              </a>
+              <a
+                href="https://can-solutions.atlassian.net/wiki/spaces/~608085e2cbff1b00700dc8db/pages/360449/AWS+Multi-Agent+Employee+Virtual+Assistant+Architecture+Preview"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-[#172B4D] text-white px-6 py-3 rounded-lg hover:bg-[#253858] transition text-lg font-semibold"
+              >
+                Confluence
+              </a>
             </div>
           </div>
         )}
