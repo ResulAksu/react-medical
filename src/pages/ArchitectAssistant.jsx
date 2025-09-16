@@ -100,8 +100,7 @@ export default function SolutionArchitectAssistant() {
     const doc = baseDocumentation({ answers: null });
     setResult({
       imageUrl:
-        process.env.PUBLIC_URL +
-        "/d2d771c9-ce1e-45bc-965a-c01021af5e2e-aws-multi-agent-employee-virtual-assistant-architecture-diagram-2928x1797.5c46b69a1d0e34439346d3893899258324c4fc55.png",
+        process.env.PUBLIC_URL + "/aws.png",
       documentation: doc,
     });
     setShowFeedback(false);
@@ -202,7 +201,7 @@ const handleChatAnswer = (answer) => {
           setResult({
             imageUrl:
               process.env.PUBLIC_URL +
-              "/d2d771c9-ce1e-45bc-965a-c01021af5e2e-aws-multi-agent-employee-virtual-assistant-architecture-diagram-2928x1797.5c46b69a1d0e34439346d3893899258324c4fc55.png",
+              "/aws.png",
             documentation: doc,
           });
           setChatWaiting(false);
